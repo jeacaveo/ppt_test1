@@ -22,9 +22,8 @@ def load_fixtures(apps, schema_editor):
                                        description=post.get("description"),
                                        author=author)
         # Adding tags to post
-        (post_obj.tags.add(Tag.objects.get_or_create(name=tag)[0])
-         for tag in post.get("tags").split(", ")
-         if post.get("tags"))
+        for tag in post.get("tags").split(", ") or []:
+            post_obj.tags.add(Tag.objects.get_or_create(name=tag)[0])
 
 
 class Migration(migrations.Migration):

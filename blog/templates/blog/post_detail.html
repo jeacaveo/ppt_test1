@@ -1,3 +1,11 @@
 <h1>{{ object.title}}</h1>
 <p>{{ object.description }}</p>
 <p>Author: {{ object.author.name }}</p>
+<p>Tags:</p>
+<ul>
+    {% for tag in object.tags.all %}
+        <li>{{ tag.name }}</li>
+    {% empty %}
+        <li>No tags.</li>
+    {% endfor %}
+</ul>

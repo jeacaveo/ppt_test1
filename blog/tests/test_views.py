@@ -7,11 +7,15 @@ class PostViewsTests(TestCase):
     """ Test whether our post entries show up on the posts page. """
 
     def setUp(self):
+        self.tag = models.Tag.objects.create(name="cooking")
         self.author = models.Author.objects.create(name="J. Snow")
+
         self.post1 = models.Post.objects.create(
             title="Post 1",
             description="Body for post 1",
             author=self.author)
+        self.post1.tags.add(self.tag)
+
         self.post2 = models.Post.objects.create(
             title="Post 2",
             description="Body for post 2",
@@ -44,6 +48,7 @@ class PostViewsTests(TestCase):
         # Then
         self.assertContains(response, self.post1.title)
         self.assertContains(response, self.post1.description)
-        self.assertContains(response, self.post1.author.name)
+        self.assertContains(response, self.author.name)
+        self.assertContains(response, self.tag.name)
         self.assertNotContains(response, self.post2.title)
         self.assertNotContains(response, self.post2.description)

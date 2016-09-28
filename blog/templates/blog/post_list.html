@@ -1,8 +1,17 @@
 <h1>Posts</h1>
-<ul>
+<table style="width:100%">
+    <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Author</th>
+    </tr>
     {% for post in object_list %}
-        <li>{{ post.title }} - {{ post.author }}</li>
+       <tr>
+           <td>{{ post.title }}</td>
+           <td>{{ post.summary }}</td>
+           <td>{{ post.author }}</td>
+       </tr>
     {% empty %}
         <li>No posts yet.</li>
     {% endfor %}
-</ul>
+</table>
