@@ -12,6 +12,12 @@ class Author(models.Model):
 class Tag(models.Model):
     name = models.CharField(max_length=100)
 
+    def _get_frecuency(self):
+        "Returns amount of Posts associated to each Tag."
+        return Post.objects.filter(tags=self.id).count()
+
+    frecuency = property(_get_frecuency)
+
     def __str__(self):
         return self.name
 

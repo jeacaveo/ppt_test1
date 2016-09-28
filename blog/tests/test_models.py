@@ -25,10 +25,10 @@ class AuthorTestCase(TestCase):
 
 class TagTestCase(TestCase):
     def setUp(self):
-        models.Tag.objects.create(name="cooking")
-        models.Tag.objects.create(name="sports")
+        self.tag1 = models.Tag.objects.create(name="cooking")
+        self.tag2 = models.Tag.objects.create(name="sports")
 
-    def test_author_object(self):
+    def test_tag_object(self):
         """ Test proper creation of Tags in database. """
         # Given
         tag_count = models.Tag.objects.count()
@@ -42,6 +42,26 @@ class TagTestCase(TestCase):
         self.assertEqual(tag_count, 2)
         self.assertEqual(tag.name, tag_name)
         self.assertFalse(not_tag)
+
+    def test_tag_frecuency(self):
+        """ Test getting of frecuency of each Tag in all Posts. """
+        # Given
+        author = models.Author.objects.create(name="J. Snow")
+        post1 = models.Post.objects.create(title="Post 1",
+                                           description="Body for post 1",
+                                           author=author)
+        post1.tags.add(self.tag1)
+        post2 = models.Post.objects.create(title="Post 2",
+                                           description="Body for post 2",
+                                           author=author)
+        post2.tags.add(self.tag1, self.tag2)
+
+        # When
+        tags = models.Tag.objects.all()
+
+        # Then
+        self.assertEqual(tags[0].frecuency, 2)
+        self.assertEqual(tags[1].frecuency, 1)
 
 
 class PostTestCase(TestCase):
