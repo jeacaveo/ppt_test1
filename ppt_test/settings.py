@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
+from sys import argv
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -24,6 +25,9 @@ SECRET_KEY = '3zt_o3f*^lfg-)(0j!+pw=85k+*++mqq$l)0r4h2i5(tn)meqg'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+
+# Detect if we are running tests
+TESTING = len(argv) > 1 and argv[1] == 'test'
 
 ALLOWED_HOSTS = []
 
