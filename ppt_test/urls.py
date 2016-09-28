@@ -19,5 +19,9 @@ from blog import views
 
 urlpatterns = [
     url(r'^posts/$', views.PostListView.as_view(), name='post-list'),
+    url(r'^posts/(?P<pk>[-\w]+)/$',
+        views.PostDetailView.as_view(),
+        name='post-detail'),
+
     url(r'^admin/', admin.site.urls),
 ]

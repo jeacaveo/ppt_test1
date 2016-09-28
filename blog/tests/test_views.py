@@ -18,12 +18,32 @@ class PostViewsTests(TestCase):
             author=self.author)
 
     def test_post_list(self):
-        # Given (two pre-existing Posts)
+        """ Test posts list endpoint returns expected information. """
+        # Given
         url = reverse("post-list")
 
         # When
         response = self.client.get(url)
 
         # Then
-        self.assertContains(response, "Post 1")
-        self.assertContains(response, "Post 2")
+        self.assertContains(response, self.post2.title)
+        self.assertContains(response, self.post2.title)
+
+    def test_post_detail(self):
+        """
+        Test posts details endpoint returns expected information for
+        first post and no information from second post.
+
+        """
+        # Given
+        url = reverse("post-detail", args=[self.post1.id])
+
+        # When
+        response = self.client.get(url)
+
+        # Then
+        self.assertContains(response, self.post1.title)
+        self.assertContains(response, self.post1.description)
+        self.assertContains(response, self.post1.author.name)
+        self.assertNotContains(response, self.post2.title)
+        self.assertNotContains(response, self.post2.description)
