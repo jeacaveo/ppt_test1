@@ -9,8 +9,11 @@ def get_file(file_location_name):
             Full path and name of file to load.
 
     Returns:
-        Error (str), File object
+        (Error (str), File object or None)
 
     """
-    file_obj = open(file_location_name)
+    try:
+        file_obj = open(file_location_name)
+    except OSError as e:
+        return e.strerror, None
     return "", file_obj
