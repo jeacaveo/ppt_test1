@@ -22,6 +22,22 @@ class TestReadJsonFile(TestCase):
         self.assertFalse(error)
         self.assertEqual(obj.get("id"), "1")
 
+    def test_nested_json_file(self):
+        """
+        Test function to get an object based on a JSON file,
+        when provided with a valid file location.
+
+        """
+        # Given
+        file_location_name = os.path.join(os.getcwd(), "posts.json")
+
+        # When
+        error, obj = data.get_json_from_file(file_location_name)
+
+        # Then
+        self.assertFalse(error)
+        self.assertEqual(obj.get("posts")[0].get("id"), "1")
+
     def test_json_file_not_found_error(self):
         """
         Test function to get an object based on a JSON file returns an error,
