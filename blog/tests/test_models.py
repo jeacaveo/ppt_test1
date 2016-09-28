@@ -57,8 +57,8 @@ class PostTestCase(TestCase):
         # Posts
         self.post1 = models.Post.objects.create(
             title="Post 1",
-            description="This post has a description of over ten words. "
-                        "Seems true.",
+            description="This post has a description with ten words exatly "
+                        "here. Everything else is not part of the summary.",
             author=self.author1)
         self.post2 = models.Post.objects.create(
             title="Post 2",
@@ -151,3 +151,16 @@ class PostTestCase(TestCase):
         # Then
         self.assertEqual(post, self.post2)
         self.assertEqual(post.tags.all()[1], tag)
+
+    def test_post_summary(self):
+        """ Test summary field returns only first 10 words of description. """
+        # Given
+        expected_summary = ("This post has a description with ten words "
+                            "exatly here.")
+
+        # When
+        post = models.Post.objects.get(id=self.post1.id)
+
+        # Then
+        self.assertEqual(post.summary, expected_summary)
+        self.assertNotEqual(post.description, post.summary)

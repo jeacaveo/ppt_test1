@@ -21,3 +21,35 @@ def get_json_from_file(file_location_name):
         return e.strerror, None
     except ValueError as e:
         return e.args[0], None
+
+
+def get_word_count(text):
+    """
+    Get amount of words in a string.
+
+    Parameters:
+        text: str
+            String to be evaluated.
+
+    Returns:
+        int
+
+    """
+    return len(text.split(" ")) if text else 0
+
+
+def get_first_words_from_string(text, amount):
+    """
+    Get the first N amount of words in a string.
+
+    Parameters:
+        text: str
+            String to be evaluated.
+        amount: int
+            Amount of words to get from string.
+
+    Returns:
+        str
+
+    """
+    return " ".join(text.split(" ")[:amount])

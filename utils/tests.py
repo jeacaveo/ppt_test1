@@ -3,7 +3,7 @@ from unittest import TestCase
 from utils import data
 
 
-class TestReadJsonFile(TestCase):
+class ReadJsonFileTestCase(TestCase):
     """ Test all functions related to parsing a Json file. """
 
     def test_json_file(self):
@@ -69,3 +69,112 @@ class TestReadJsonFile(TestCase):
         # Then
         self.assertEqual(error, "Expecting value: line 1 column 1 (char 0)")
         self.assertFalse(loaded_file)
+
+
+class WordCountTestCase(TestCase):
+    """ Test all functions related to string parsing and counting. """
+
+    def test_multiple_words_count(self):
+        """
+        Test function to get amount of words in a string with multiple words
+        to work properly.
+
+        """
+        # Given
+        text = "This text has five words."
+
+        # When
+        word_count = data.get_word_count(text)
+
+        # Then
+        self.assertEqual(word_count, 5)
+
+    def test_single_word_count(self):
+        """
+        Test function to get amount of words in a string with a single word
+        to work properly.
+
+        """
+        # Given
+        text = "One."
+
+        # When
+        word_count = data.get_word_count(text)
+
+        # Then
+        self.assertEqual(word_count, 1)
+
+    def test_no_words_count(self):
+        """
+        Test function to get amount of words in a string with no words
+        to work properly.
+
+        """
+        # Given
+        text = ""
+
+        # When
+        word_count = data.get_word_count(text)
+
+        # Then
+        self.assertEqual(word_count, 0)
+
+    def test_get_first_words_from_string(self):
+        """
+        Test function to get first N words from a string, when the specified
+        amount is lower than the word total.
+
+        """
+        # Given
+        text = "This text has five words."
+
+        # When
+        first_words = data.get_first_words_from_string(text, 3)
+
+        # Then
+        self.assertEqual(first_words, "This text has")
+
+    def test_get_first_words_from_string_same(self):
+        """
+        Test function to get first N words from a string, when the specified
+        amount is the same as the word total.
+
+        """
+        # Given
+        text = "This text has five words."
+
+        # When
+        first_words = data.get_first_words_from_string(text, 5)
+
+        # Then
+        self.assertEqual(first_words, text)
+
+    def test_get_first_words_from_string_greater(self):
+        """
+        Test function to get first N words from a string, when the specified
+        amount is greater than the word total.
+
+        """
+        # Given
+        text = "One."
+
+        # When
+        first_words = data.get_first_words_from_string(text, 3)
+
+        # Then
+        self.assertEqual(first_words, "One.")
+
+    def test_get_first_words_from_string_empty(self):
+        """
+        Test function to get first N words from a string, when the specified
+        string is empty.
+
+        """
+        # Given
+        text = ""
+
+        # When
+        first_words = data.get_first_words_from_string(text, 3)
+
+        # Then
+        self.assertEqual(first_words, "")

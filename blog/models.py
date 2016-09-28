@@ -1,4 +1,5 @@
 from django.db import models
+from utils.data import get_first_words_from_string
 
 
 class Author(models.Model):
@@ -20,6 +21,12 @@ class Post(models.Model):
     description = models.TextField()
     author = models.ForeignKey(Author)
     tags = models.ManyToManyField(Tag, blank=True, related_name="posts")
+
+    def _get_summary(self):
+        "Returns the first 10 words of the description."
+        return get_first_words_from_string(self.description, 10)
+
+    summary = property(_get_summary)
 
     def __str__(self):
         return self.title
