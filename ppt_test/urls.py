@@ -15,7 +15,9 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from blog import views
 
 urlpatterns = [
+    url(r'^posts/$', views.PostListView.as_view(), name='post-list'),
     url(r'^admin/', admin.site.urls),
 ]
