@@ -5,9 +5,9 @@ from utils import data
 class TestReadJsonFile(TestCase):
     """ Test all functions related to parsing a Json file. """
 
-    def test_read_file(self):
+    def test_json_file(self):
         """
-        Test function to get a file by it's location/name works properly,
+        Test function to get an object based on a JSON file,
         when provided with a valid file location.
 
         """
@@ -15,15 +15,15 @@ class TestReadJsonFile(TestCase):
         file_location_name = os.path.join(os.getcwd(), "post.json")
 
         # When
-        errors, loaded_file = data.get_file(file_location_name)
+        error, obj = data.get_json_from_file(file_location_name)
 
         # Then
-        self.assertFalse(errors)
-        self.assertTrue(loaded_file)
+        self.assertFalse(error)
+        self.assertEqual(obj.get("id"), "1")
 
-    def test_read_file_error(self):
+    def test_json_file_error(self):
         """
-        Test function to get a file by it's location/name returns an error,
+        Test function to get an object based on a JSON file returns an error,
         when provided with an invalid file location.
 
         """
@@ -31,7 +31,7 @@ class TestReadJsonFile(TestCase):
         file_location_name = "bad_location_name"
 
         # When
-        error, loaded_file = data.get_file(file_location_name)
+        error, loaded_file = data.get_json_from_file(file_location_name)
 
         # Then
         self.assertEqual(error, "No such file or directory")

@@ -1,19 +1,21 @@
 """ Module in charge of data manipulation entities. """
+from json import load
 
-def get_file(file_location_name):
+
+def get_json_from_file(file_location_name):
     """
-    Gets a file object based on file_location.
+    Get an object representation of a JSON file object.
 
     Parameters:
-        file_location_name: str
-            Full path and name of file to load.
+        file_obj: File object
+            JSON file object.
 
     Returns:
-        (Error (str), File object or None)
+        (Error (str), JSON python object representation or None)
 
     """
     try:
-        file_obj = open(file_location_name)
+        with open(file_location_name) as file_obj:
+            return "", load(file_obj)
     except OSError as e:
         return e.strerror, None
-    return "", file_obj
