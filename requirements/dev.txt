@@ -1,3 +1,4 @@
 -r common.txt
 
 ipdb==0.10.1
+pylama==7.1.0

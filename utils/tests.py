@@ -2,6 +2,7 @@ import os
 from unittest import TestCase
 from utils import data
 
+
 class TestReadJsonFile(TestCase):
     """ Test all functions related to parsing a Json file. """
 
