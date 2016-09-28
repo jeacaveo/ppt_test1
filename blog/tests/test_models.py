@@ -42,3 +42,51 @@ class TagTestCase(TestCase):
         self.assertEqual(tag_count, 2)
         self.assertEqual(tag.name, tag_name)
         self.assertFalse(not_tag)
+
+
+class PostTestCase(TestCase):
+    def setUp(self):
+        # Authors
+        author1 = models.Author.objects.create(name="J. Snow")
+        author2 = models.Author.objects.create(name="S. Stark")
+
+        # Tags
+        tag1 = models.Tag.objects.create(name="cooking")
+        tag2 = models.Tag.objects.create(name="sports")
+
+        # Posts
+        self.post1 = models.Post.objects.create(
+            title="Post 1",
+            description="Body for post 1",
+            author=author1)
+        self.post2 = models.Post.objects.create(
+            title="Post 2",
+            description="Body for post 2",
+            author=author2)
+        self.post2.tags.add(tag1, tag2)
+
+    def test_post_no_tags(self):
+        """ Test post without tags can be created. """
+        # Given
+        post_title = "Post 1"
+
+        # When
+        post = models.Post.objects.get(title=post_title)
+
+        # Then
+        self.assertEqual(post, self.post1)
+        self.assertEqual(post.title, post_title)
+        self.assertEqual(post.tags.count(), 0)
+
+    def test_post_tags(self):
+        """ Test post with tags can be created. """
+        # Given
+        post_title = "Post 2"
+
+        # When
+        post = models.Post.objects.get(title=post_title)
+
+        # Then
+        self.assertEqual(post, self.post2)
+        self.assertEqual(post.title, post_title)
+        self.assertEqual(post.tags.count(), 2)
