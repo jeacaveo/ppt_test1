@@ -47,23 +47,24 @@ class TagTestCase(TestCase):
 class PostTestCase(TestCase):
     def setUp(self):
         # Authors
-        author1 = models.Author.objects.create(name="J. Snow")
-        author2 = models.Author.objects.create(name="S. Stark")
+        self.author1 = models.Author.objects.create(name="J. Snow")
+        self.author2 = models.Author.objects.create(name="S. Stark")
 
         # Tags
-        tag1 = models.Tag.objects.create(name="cooking")
-        tag2 = models.Tag.objects.create(name="sports")
+        self.tag1 = models.Tag.objects.create(name="cooking")
+        self.tag2 = models.Tag.objects.create(name="sports")
 
         # Posts
         self.post1 = models.Post.objects.create(
             title="Post 1",
-            description="Body for post 1",
-            author=author1)
+            description="This post has a description of over ten words. "
+                        "Seems true.",
+            author=self.author1)
         self.post2 = models.Post.objects.create(
             title="Post 2",
             description="Body for post 2",
-            author=author2)
-        self.post2.tags.add(tag1, tag2)
+            author=self.author2)
+        self.post2.tags.add(self.tag1, self.tag2)
 
     def test_post_no_tags(self):
         """ Test post without tags can be created. """
@@ -90,3 +91,63 @@ class PostTestCase(TestCase):
         self.assertEqual(post, self.post2)
         self.assertEqual(post.title, post_title)
         self.assertEqual(post.tags.count(), 2)
+
+    def test_post_filter_id(self):
+        """ Test filter of post by ID. """
+        # Given
+        post_id = 1
+
+        # When
+        post = models.Post.objects.get(id=post_id)
+
+        # Then
+        self.assertEqual(post, self.post1)
+        self.assertEqual(post.id, post_id)
+
+    def test_post_filter_author_name(self):
+        """ Test filter of post by Author. """
+        # Given
+        author_name = self.author1.name
+
+        # When
+        post = models.Post.objects.filter(author__name=author_name).first()
+
+        # Then
+        self.assertEqual(post, self.post1)
+        self.assertEqual(post.author.name, author_name)
+
+    def test_post_filter_author(self):
+        """ Test filter of post by Author object. """
+        # Given
+        author = self.author1
+
+        # When
+        post = models.Post.objects.filter(author=author).first()
+
+        # Then
+        self.assertEqual(post, self.post1)
+        self.assertEqual(post.author, author)
+
+    def test_post_tag_name_filter(self):
+        """ Test filter of post by Tag name. """
+        # Given
+        tag_name = self.tag2.name
+
+        # When
+        post = models.Post.objects.filter(tags__name=tag_name).first()
+
+        # Then
+        self.assertEqual(post, self.post2)
+        self.assertEqual(post.tags.all()[1].name, tag_name)
+
+    def test_post_tag_filter(self):
+        """ Test filter of post by Tag object. """
+        # Given
+        tag = self.tag2
+
+        # When
+        post = models.Post.objects.filter(tags=tag).first()
+
+        # Then
+        self.assertEqual(post, self.post2)
+        self.assertEqual(post.tags.all()[1], tag)
