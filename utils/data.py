@@ -19,3 +19,5 @@ def get_json_from_file(file_location_name):
             return "", load(file_obj)
     except OSError as e:
         return e.strerror, None
+    except ValueError as e:
+        return e.args[0], None

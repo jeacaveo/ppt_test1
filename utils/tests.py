@@ -21,7 +21,7 @@ class TestReadJsonFile(TestCase):
         self.assertFalse(error)
         self.assertEqual(obj.get("id"), "1")
 
-    def test_json_file_error(self):
+    def test_json_file_not_found_error(self):
         """
         Test function to get an object based on a JSON file returns an error,
         when provided with an invalid file location.
@@ -35,4 +35,20 @@ class TestReadJsonFile(TestCase):
 
         # Then
         self.assertEqual(error, "No such file or directory")
+        self.assertFalse(loaded_file)
+
+    def test_json_format_file_error(self):
+        """
+        Test function to get an object based on a JSON file returns an error,
+        when provided with an invalid JSON in the file.
+
+        """
+        # Given
+        file_location_name = os.path.join(os.getcwd(), "README.md")
+
+        # When
+        error, loaded_file = data.get_json_from_file(file_location_name)
+
+        # Then
+        self.assertEqual(error, "Expecting value: line 1 column 1 (char 0)")
         self.assertFalse(loaded_file)
